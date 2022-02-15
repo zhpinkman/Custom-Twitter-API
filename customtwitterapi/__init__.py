@@ -1,1 +1,2 @@
-from customtwitterapi.users import get_user_timeline
+from customtwitterapi.users import get_user_timeline, get_user_details, CustomErrorStatusCode
+from customtwitterapi.consts import status_codes
