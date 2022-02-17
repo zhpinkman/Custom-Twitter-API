@@ -1,6 +1,7 @@
 import os
 import json
 import requests
+import time
 
 from customtwitterapi.user_timeline.user_timeline import is_last_message
 from ..consts import status_codes, CustomErrorStatusCode
@@ -56,7 +57,17 @@ def get_user_relations(bearer_token: str, user_id: str, relation_type: str):
     users_relations = []
     cursor = None
     while True:
-        resp = make_request(user_id, cursor, bearer_token, relation_type)
+        try:
+            resp = make_request(user_id, cursor, bearer_token, relation_type)
+        except CustomErrorStatusCode as e:
+            details = e.args[0]
+            if details['message'] == status_codes['RATE_LIMIT_REACHED']:
+                print('Sleeping for 15 minutes')
+                time.sleep(15 * 60)
+                continue
+            else:
+                raise e
+
         users_relations.extend(resp['data'])
         if is_last_message(resp):
             break
