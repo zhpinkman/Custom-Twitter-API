@@ -69,6 +69,8 @@ def get_user_relations(bearer_token: str, user_id: str, relation_type: str):
                 raise e
 
         users_relations.extend(resp['data'])
+        if len(users_relations) > 15000:
+            break
         if is_last_message(resp):
             break
 
