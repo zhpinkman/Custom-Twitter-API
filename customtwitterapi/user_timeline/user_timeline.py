@@ -1,4 +1,5 @@
 from typing import List
+import time
 import requests
 import json
 import os
@@ -81,7 +82,16 @@ def get_user_timeline(bearer_token: str, user_id: str = None, screen_name: str =
     users_tweets = []
     max_id = None
     while True:
-        resp = make_request(user_id, screen_name, max_id, bearer_token)
+        try:
+            resp = make_request(user_id, screen_name, max_id, bearer_token)
+        except CustomErrorStatusCode as e:
+            details = e.args[0]
+            if details['message'] == status_codes['RATE_LIMIT_REACHED']:
+                print('Sleeping for 15 minutes')
+                time.sleep(15 * 60)
+                continue
+            else:
+                raise e
         if is_last_message(resp):
             break
 
