@@ -92,19 +92,19 @@ def get_user_timeline(bearer_token: str, user_id: str = None, screen_name: str =
                 continue
             else:
                 raise e
-        if is_last_message(resp):
-            break
 
         if len(users_tweets) and resp[0]['id'] == users_tweets[-1]['id']:
             users_tweets.extend(resp[1:])
         else:
             users_tweets.extend(resp)
 
+        if is_last_message(resp):
+            break
+
         max_id = resp[-1]['id']
 
     user_id = resp[0]['user']['id']
-    if max_id == None:
-        users_tweets.append(resp[0])
+
     print(f'num of tweets for user_id {user_id} : {len(users_tweets)}')
     logging(user_id, screen_name)
     with open(f'outputs/tweets/user_{user_id}.json', 'w') as f:
