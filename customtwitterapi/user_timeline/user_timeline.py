@@ -107,7 +107,6 @@ def get_user_timeline(bearer_token: str, user_id: str = None, screen_name: str =
     user_id = resp[0]['user']['id']
 
     print(f'num of tweets for user_id {user_id} : {len(users_tweets)}')
-    logging(user_id, screen_name)
     with open(f'outputs/tweets/user_{user_id}.json', 'w') as f:
         json.dump(users_tweets, f)
         f.close()
