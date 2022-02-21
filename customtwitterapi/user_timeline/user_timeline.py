@@ -23,15 +23,16 @@ def get_logs():
 
 
 def do_pre_check(user_id: str, screen_name: str):
-    history_ids = get_logs()
-    if user_id in history_ids or screen_name in history_ids:
-        raise CustomErrorStatusCode(
-            {'message': status_codes['ALREADY_CRAWLED']})
     if user_id == None and screen_name == None:
         raise CustomErrorStatusCode(
             {'message': status_codes['EMPTY_USER_ID_NAME']})
     if not os.path.exists('outputs/tweets/'):
         os.makedirs('outputs/tweets/')
+
+    if os.path.exists(f'outputs/tweets/user_{user_id}.json'):
+        raise CustomErrorStatusCode({
+            'message': status_codes['ALREADY_CRAWLED']
+        })
 
 
 def make_request(user_id: str, screen_name: str, max_id: int, bearer_token: str):
