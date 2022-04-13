@@ -44,6 +44,7 @@ def make_request(user_id: str, screen_name: str, max_id: int, bearer_token: str)
             params={
                 'count': 200,
                 'user_id' if user_id != None else 'screen_name': user_id if user_id != None else screen_name,
+                'tweet_mode': 'extended'
             },
             headers=headers
         )
@@ -53,7 +54,8 @@ def make_request(user_id: str, screen_name: str, max_id: int, bearer_token: str)
             params={
                 'count': 200,
                 'user_id' if user_id != None else 'screen_name': user_id if user_id != None else screen_name,
-                'max_id': max_id
+                'max_id': max_id,
+                'tweet_mode': 'extended'
             },
             headers=headers
         )
